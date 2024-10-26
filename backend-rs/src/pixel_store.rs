@@ -1,3 +1,5 @@
+use rand::prelude::*;
+
 // Synced with the colors on the frontend
 #[derive(Copy, Clone)]
 pub enum Color {
@@ -19,9 +21,14 @@ pub struct PixelStore {
 
 impl PixelStore {
     pub fn new() -> PixelStore {
-        PixelStore {
+        let mut rng = thread_rng();
+        let mut result = PixelStore {
             // This won't be purple in reality, but for now while we just want to be sure we have results, let's do purple
-            data: [Color::Purple; 10_000],
+            data: [Color::Purple; 10_000]
+        };
+        for x in result.data.iter_mut() {
+            *x = unsafe { std::mem::transmute (rng.gen_range(0..9) as u8) };
         }
+        result
     }
 }
