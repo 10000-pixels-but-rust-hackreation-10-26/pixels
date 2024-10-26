@@ -51,4 +51,3 @@ window.onload = async () => {
   window.connectToWebsocket();
 };
 
-window.connectToWebsocket();

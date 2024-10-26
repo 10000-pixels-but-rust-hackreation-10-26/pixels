@@ -24,14 +24,14 @@ export const handleWebsocket = (
   socket.onmessage = (event) => {
     if (event.data === "rate limit exceeded") {
       return;
-    }
+    };
 
     if (event.data === "client limit exceeded") {
       canvas.style.display = "none";
       loading.style.display = "flex";
       loading.textContent = "Client limit exceeded. Please try again later.";
       return;
-    }
+    };
 
     const messageData = JSON.parse(event.data);
 
