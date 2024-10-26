@@ -33,7 +33,12 @@ export const handleWebsocket = (
       return;
     }
 
-    const messageData = JSON.parse(event.data);
+    let messageData;
+    try {
+      messageData = JSON.parse(event.data);
+    } catch (err) {
+      console.log(event, err)
+    }
 
     let newPixelData = "";
 
