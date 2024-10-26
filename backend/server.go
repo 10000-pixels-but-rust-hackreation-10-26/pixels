@@ -90,7 +90,7 @@ var upgrader = websocket.Upgrader{
 		origin := r.Header.Get("Origin")
 		environment := os.Getenv("ENVIRONMENT")
 		if environment == "development" {
-			return origin == "http://127.0.0.1:5500" || origin == "http://localhost:5500"
+			return origin == "http://127.0.0.1:5500"
 		} else {
 			return origin == "https://tenthousandpixels.com"
 		}
@@ -188,6 +188,7 @@ func (server *Server) handleConnections(rw http.ResponseWriter, req *http.Reques
 }
 
 func (server *Server) handleGetPixels(rw http.ResponseWriter, req *http.Request) {
+	err := server.redisClient.SetRange(req.Context(), "pixels", 0, "0").Err()
 	pixelsData, err := server.redisClient.Get(req.Context(), "pixels").Result()
 	if err != nil {
 		log.Printf("error getting pixels data from Redis: %v", err)
