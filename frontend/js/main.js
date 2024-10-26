@@ -16,7 +16,7 @@ window.onload = async () => {
   const response = await fetch(pixelsUrl);
   let pixelData = await response.text();
 
-  document.getElementById("connect-message").style.display = "inline";
+  // document.getElementById("connect-message").style.display = "inline";
   document.getElementById("disclaimer").style.display = "inline";
   document.getElementById("frosted-glass").style.display = "inline";
 
@@ -50,3 +50,4 @@ window.onload = async () => {
   };
   window.connectToWebsocket();
 };
+

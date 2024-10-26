@@ -18,3 +18,5 @@ REDIS_PASSWORD=
 ENVIRONMENT=development
 HCAPTCHA_SECRET=
 ```
+
+python3 -m http.server 5500 

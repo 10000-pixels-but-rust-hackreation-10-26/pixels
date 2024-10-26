@@ -13,7 +13,7 @@ export const handleWebsocket = (
   // const socket = new WebSocket(websocketUrl, hCaptchaToken);
   const loading = document.getElementById("loading");
   // const captcha = document.getElementById("captcha");
-  const connectMessage = document.getElementById("connect-message");
+  // const connectMessage = document.getElementById("connect-message");
   const disclaimer = document.getElementById("disclaimer");
   const frostedGlass = document.getElementById("frosted-glass");
 
@@ -24,23 +24,28 @@ export const handleWebsocket = (
   socket.onmessage = (event) => {
     if (event.data === "rate limit exceeded") {
       return;
-    }
+    };
 
     if (event.data === "client limit exceeded") {
       canvas.style.display = "none";
       loading.style.display = "flex";
       loading.textContent = "Client limit exceeded. Please try again later.";
       return;
-    }
+    };
 
-    const messageData = JSON.parse(event.data);
+    let messageData;
+    try {
+      messageData = JSON.parse(event.data);
+    } catch (err) {
+      console.log(event, err)
+    }
 
     let newPixelData = "";
 
     if (messageData.type === "initial") {
       newPixelData = messageData.data;
       // captcha.remove();
-      connectMessage.remove();
+      // connectMessage.remove();
       disclaimer.remove();
       frostedGlass.remove();
       canvas.style.display = "block";
