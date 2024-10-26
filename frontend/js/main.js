@@ -48,4 +48,6 @@ window.onload = async () => {
       canvasRenderer,
     );
   };
+
+  window.connectToWebsocket();
 };
