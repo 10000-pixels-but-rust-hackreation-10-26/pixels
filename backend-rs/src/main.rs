@@ -3,10 +3,27 @@ use rocket::{get, launch, routes};
 
 use rocket_cors::{AllowedHeaders, AllowedOrigins};
 
+use rocket_ws as ws;
+#[get("/ws")]
+fn do_ws(ws: ws::WebSocket) -> ws::Stream!['static] {
+let ws = ws.config(ws::Config {
+        max_send_queue: Some(5),
+        ..Default::default()
+    });
+
+    ws::Stream! { ws =>
+        yield ws::Message::Text("{type : \"initial\"}".to_string());
+        for await message in ws {
+            println!("{:?}", message);
+            yield message?;
+        }
+    }
+}
+
 #[get("/pixels")]
 fn hello() -> String {
     let mut result = String::new();
-    for x in 0..10000 {
+    for _ in 0..10000 {
         result += "5"
     }
     result
@@ -26,5 +43,5 @@ fn rocket() -> _ {
     }
     .to_cors().unwrap();
 
-    rocket::build().attach(cors).mount("/", routes![hello])
+    rocket::build().attach(cors).mount("/", routes![hello, do_ws])
 }
