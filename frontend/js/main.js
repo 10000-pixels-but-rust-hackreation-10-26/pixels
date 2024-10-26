@@ -37,10 +37,11 @@ window.onload = async () => {
     getSocket,
   );
 
-  window.connectToWebsocket = function (hCaptchaToken) {
+  // window.connectToWebsocket = function (hCaptchaToken) {
+  window.connectToWebsocket = function () {
     handleWebsocket(
       setSocket,
-      hCaptchaToken,
+      // hCaptchaToken,
       getPixelData,
       setPixelData,
       canvas,

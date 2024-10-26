@@ -3,15 +3,16 @@ import { websocketUrl } from "./constants.js";
 
 export const handleWebsocket = (
   setSocket,
-  hCaptchaToken,
+  // hCaptchaToken,
   getPixelData,
   setPixelData,
   canvas,
   canvasRenderer,
 ) => {
-  const socket = new WebSocket(websocketUrl, hCaptchaToken);
+  const socket = new WebSocket(websocketUrl);
+  // const socket = new WebSocket(websocketUrl, hCaptchaToken);
   const loading = document.getElementById("loading");
-  const captcha = document.getElementById("captcha");
+  // const captcha = document.getElementById("captcha");
   const connectMessage = document.getElementById("connect-message");
   const disclaimer = document.getElementById("disclaimer");
   const frostedGlass = document.getElementById("frosted-glass");
@@ -38,7 +39,7 @@ export const handleWebsocket = (
 
     if (messageData.type === "initial") {
       newPixelData = messageData.data;
-      captcha.remove();
+      // captcha.remove();
       connectMessage.remove();
       disclaimer.remove();
       frostedGlass.remove();

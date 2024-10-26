@@ -11,6 +11,10 @@ export const colorMap = {
   9: "#000000", // black
 };
 
+<<<<<<< HEAD
+=======
+// const production = true;
+>>>>>>> 21a950ebc1e3c3c35e4ad7b29661901f495016a0
 const production = false;
 
 export const websocketUrl = production
