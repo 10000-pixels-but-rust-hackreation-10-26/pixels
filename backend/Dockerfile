@@ -16,5 +16,5 @@ COPY --from=builder /run-app /usr/local/bin/
 CMD ["run-app"]
 
 FROM serve as develop
-ENV REDIS_ADDRESS=http://localhost:6379/
+ENV REDIS_ADDRESS=localhost:6379/
 ENV ENVIRONMENT=development

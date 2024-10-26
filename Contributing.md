@@ -13,7 +13,7 @@
 The server expects a `.env` file in the `backend` folder. Create one in the following format:
 
 ```
-REDIS_ADDRESS=http://localhost:6379/
+REDIS_ADDRESS=localhost:6379/
 REDIS_PASSWORD=
 ENVIRONMENT=development
 HCAPTCHA_SECRET=
