@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+rand = "0.8.5"
 rocket = "0.5.1"
 rocket_cors = "0.6.0"
 rocket_ws = "0.1.1"
