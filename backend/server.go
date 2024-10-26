@@ -90,7 +90,7 @@ var upgrader = websocket.Upgrader{
 		origin := r.Header.Get("Origin")
 		environment := os.Getenv("ENVIRONMENT")
 		if environment == "development" {
-			return origin == "http://127.0.0.1:5500"
+			return origin == "http://127.0.0.1:5500" || origin == "http://localhost:5500"
 		} else {
 			return origin == "https://tenthousandpixels.com"
 		}

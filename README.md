@@ -16,3 +16,6 @@ A real-time collaborative pixel art canvas where users can draw pixels and see l
   - Redis
 
 Deployed using Vercel, fly.io, and Managed Redis.
+
+# Contributing
+See [Contributing.md](Contributing.md)
