@@ -24,11 +24,14 @@ fn do_ws(ws: ws::WebSocket) -> ws::Stream!['static] {
 
 #[get("/pixels")]
 fn pixels(pixel_store: &State<Box<pixel_store::PixelStore>>) -> String {
-    let mut result = String::new();
+    /*let mut result = String::new();
     for x in pixel_store.data {
         result += (x as u8).to_string().as_str() //There's no way this is performant
     }
     result
+    */
+    let result = pixel_store.data.map(|x| (x as u8 + b'0')).into_iter().collect::<Vec<u8>>();
+    String::from_utf8(result).unwrap()
 }
 
 #[launch]
