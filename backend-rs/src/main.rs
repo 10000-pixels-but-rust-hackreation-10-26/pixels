@@ -1,5 +1,5 @@
 use rocket::http::Method;
-use rocket::{get, launch, routes};
+use rocket::{get, launch, routes, State};
 
 use rocket_cors::{AllowedHeaders, AllowedOrigins};
 
@@ -20,11 +20,19 @@ let ws = ws.config(ws::Config {
     }
 }
 
+mod pixel_store;
+
+
 #[get("/pixels")]
-fn hello() -> String {
+fn pixels(pixel_store: &State<Box<pixel_store::PixelStore>>) -> String {
     let mut result = String::new();
+<<<<<<< HEAD
     for _ in 0..10000 {
         result += "5"
+=======
+    for x in pixel_store.data {
+        result += (x as u8).to_string().as_str() //There's no way this is performant
+>>>>>>> f8c1dd0f62a35a6a5e94288a7e411d08da5040de
     }
     result
 }
@@ -41,7 +49,17 @@ fn rocket() -> _ {
         allow_credentials: true,
         ..Default::default()
     }
-    .to_cors().unwrap();
+    .to_cors()
+    .unwrap();
 
+<<<<<<< HEAD
     rocket::build().attach(cors).mount("/", routes![hello, do_ws])
+=======
+    let cs = Box::new(pixel_store::PixelStore::new());
+
+    rocket::build()
+        .attach(cors)
+        .mount("/", routes![pixels])
+        .manage(cs)
+>>>>>>> f8c1dd0f62a35a6a5e94288a7e411d08da5040de
 }
