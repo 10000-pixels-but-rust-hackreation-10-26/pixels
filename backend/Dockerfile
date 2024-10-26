@@ -8,9 +8,13 @@ COPY . .
 RUN go build -v -o /run-app .
 
 
-FROM debian:bookworm
+FROM debian:bookworm as serve
 
 RUN apt update && apt install -y ca-certificates
 
 COPY --from=builder /run-app /usr/local/bin/
 CMD ["run-app"]
+
+FROM serve as develop
+ENV REDIS_ADDRESS=http://localhost:6379/
+ENV ENVIRONMENT=development
