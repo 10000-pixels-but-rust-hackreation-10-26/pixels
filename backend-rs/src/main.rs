@@ -2,11 +2,13 @@ use rocket::http::Method;
 use rocket::{get, launch, routes, State};
 
 use rocket_cors::{AllowedHeaders, AllowedOrigins};
-
 use rocket_ws as ws;
+
+mod pixel_store;
+
 #[get("/ws")]
 fn do_ws(ws: ws::WebSocket) -> ws::Stream!['static] {
-let ws = ws.config(ws::Config {
+    let ws = ws.config(ws::Config {
         max_send_queue: Some(5),
         ..Default::default()
     });
@@ -20,19 +22,11 @@ let ws = ws.config(ws::Config {
     }
 }
 
-mod pixel_store;
-
-
 #[get("/pixels")]
 fn pixels(pixel_store: &State<Box<pixel_store::PixelStore>>) -> String {
     let mut result = String::new();
-<<<<<<< HEAD
-    for _ in 0..10000 {
-        result += "5"
-=======
     for x in pixel_store.data {
         result += (x as u8).to_string().as_str() //There's no way this is performant
->>>>>>> f8c1dd0f62a35a6a5e94288a7e411d08da5040de
     }
     result
 }
@@ -52,14 +46,10 @@ fn rocket() -> _ {
     .to_cors()
     .unwrap();
 
-<<<<<<< HEAD
-    rocket::build().attach(cors).mount("/", routes![hello, do_ws])
-=======
     let cs = Box::new(pixel_store::PixelStore::new());
 
     rocket::build()
         .attach(cors)
-        .mount("/", routes![pixels])
+        .mount("/", routes![pixels, do_ws])
         .manage(cs)
->>>>>>> f8c1dd0f62a35a6a5e94288a7e411d08da5040de
 }
