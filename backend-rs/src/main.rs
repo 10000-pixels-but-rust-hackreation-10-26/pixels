@@ -1,13 +1,32 @@
 use rocket::http::Method;
-use rocket::{get, launch, routes};
+use rocket::{get, launch, routes, State};
 
 use rocket_cors::{AllowedHeaders, AllowedOrigins};
+use rocket_ws as ws;
+
+mod pixel_store;
+
+#[get("/ws")]
+fn do_ws(ws: ws::WebSocket) -> ws::Stream!['static] {
+    let ws = ws.config(ws::Config {
+        max_send_queue: Some(5),
+        ..Default::default()
+    });
+
+    ws::Stream! { ws =>
+        yield ws::Message::Text("{type : \"initial\"}".to_string());
+        for await message in ws {
+            println!("{:?}", message);
+            yield message?;
+        }
+    }
+}
 
 #[get("/pixels")]
-fn hello() -> String {
+fn pixels(pixel_store: &State<Box<pixel_store::PixelStore>>) -> String {
     let mut result = String::new();
-    for x in 0..10000 {
-        result += "5"
+    for x in pixel_store.data {
+        result += (x as u8).to_string().as_str() //There's no way this is performant
     }
     result
 }
@@ -24,7 +43,13 @@ fn rocket() -> _ {
         allow_credentials: true,
         ..Default::default()
     }
-    .to_cors().unwrap();
+    .to_cors()
+    .unwrap();
 
-    rocket::build().attach(cors).mount("/", routes![hello])
+    let cs = Box::new(pixel_store::PixelStore::new());
+
+    rocket::build()
+        .attach(cors)
+        .mount("/", routes![pixels, do_ws])
+        .manage(cs)
 }
